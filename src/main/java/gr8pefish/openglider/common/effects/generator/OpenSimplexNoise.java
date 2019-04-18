@@ -1,4 +1,4 @@
-package gr8pefish.openglider.common.wind.generator;
+package gr8pefish.openglider.common.effects.generator;
 
 /*
  * OpenSimplex Noise in Java.

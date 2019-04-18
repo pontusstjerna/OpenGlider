@@ -3,22 +3,26 @@ package gr8pefish.openglider.common.helper;
 import gr8pefish.openglider.api.item.IGlider;
 import gr8pefish.openglider.api.helper.GliderHelper;
 import gr8pefish.openglider.common.config.ConfigHandler;
+import gr8pefish.openglider.common.effects.GliderEffect;
 import gr8pefish.openglider.common.network.PacketHandler;
 import gr8pefish.openglider.common.network.PacketUpdateGliderDamage;
-import gr8pefish.openglider.common.wind.WindHelper;
-import net.minecraft.block.Block;
+import gr8pefish.openglider.common.effects.ThermalEffect;
+import gr8pefish.openglider.common.effects.TurbulenceEffect;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import sun.rmi.runtime.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OpenGliderPlayerHelper {
+
+    private static GliderEffect turbulence = new TurbulenceEffect();
+    private static GliderEffect thermals = new ThermalEffect();
+
+    private static List<GliderEffect> effects = null;
 
     /**
      * Updates the position of the player when gliding.
@@ -26,7 +30,7 @@ public class OpenGliderPlayerHelper {
      *
      * @param player - the player gliding
      */
-    public static void updatePosition(EntityPlayer player){
+    public static void updatePosition(EntityPlayer player) {
         if (shouldBeGliding(player)) {
             ItemStack glider = GliderHelper.getGlider(player);
             if (isValidGlider(glider)) {
@@ -46,16 +50,15 @@ public class OpenGliderPlayerHelper {
                         verticalSpeed = iGlider.getShiftVerticalFlightSpeed();
                     }
 
-                    // Apply wind effects
-                    WindHelper.applyWind(player, glider);
-
-                    // Apply heat uplift
-                    if (ConfigHandler.heatUpdraftEnabled) {
-                        applyHeatUplift(player, iGlider);
-                    }
-
                     // Apply falling motion
                     player.motionY *= verticalSpeed;
+
+                    // Apply all configured effects
+                    for (GliderEffect effect : effects) {
+                        if (effect.enabled()) {
+                            effect.apply(player, glider);
+                        }
+                    }
 
                     // Apply forward motion
                     double x = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
@@ -87,7 +90,7 @@ public class OpenGliderPlayerHelper {
                         if (player.world.rand.nextInt(ConfigHandler.durabilityTimeframe) == 0) { //damage about once per x ticks
                             PacketHandler.HANDLER.sendTo(new PacketUpdateGliderDamage(), (EntityPlayerMP) player); //send to client
                             glider.damageItem(ConfigHandler.durabilityPerUse, player);
-                            if (((IGlider)(glider.getItem())).isBroken(glider)) { //broken item
+                            if (((IGlider) (glider.getItem())).isBroken(glider)) { //broken item
                                 GliderHelper.setIsGliderDeployed(player, false);
                             }
                         }
@@ -103,80 +106,10 @@ public class OpenGliderPlayerHelper {
 
     }
 
-    private static void applyHeatUplift(EntityPlayer player, IGlider glider) {
-
-        BlockPos pos = player.getPosition();
-        World worldIn = player.getEntityWorld();
-
-        int maxSearchDown = 5;
-        int maxSquared = (maxSearchDown-1) * (maxSearchDown-1);
-
-        int i = 0;
-        while (i <= maxSearchDown) {
-            BlockPos scanpos = pos.down(i);
-            Block scanned = worldIn.getBlockState(scanpos).getBlock();
-            if (scanned.equals(Blocks.FIRE) || scanned.equals(Blocks.LAVA) || scanned.equals(Blocks.FLOWING_LAVA)) { //ToDo: configurable
-
-//                get closeness to heat as quadratic (squared)
-                double closeness = (maxSearchDown - i) * (maxSearchDown - i);
-
-                //set amount up
-                double configMovement = 12.2;
-                double upUnnormalized = configMovement * closeness;
-
-//                Logger.info("UN-NORMALIZED: "+upUnnormalized);
-
-                //normalize
-                double upNormalized = 1 + (upUnnormalized/(configMovement * maxSquared));
-
-//                Logger.info("NORMALIZED: "+upNormalized);
-
-                //scale amount to player's current motion
-                double motion = player.motionY;
-                double scaled = motion - (motion * (upNormalized * upNormalized));
-//                Logger.info("SCALED: "+scaled);
-
-                //apply final
-//                Logger.info("BEFORE: "+player.motionY);
-                player.motionY += scaled;
-//                Logger.info("AFTER: "+player.motionY);
-
-
-//                double boostAmt = 1 + (0.5 * (maxSearchDown - i));
-//                double calculated = (player.motionY - (player.motionY * boostAmt));
-//                Logger.info(calculated);
-//                Logger.info("BEFORE: "+player.motionY);
-//                player.motionY += calculated;
-//                Logger.info("AFTER: "+player.motionY);
-
-
-//                Vec3d vec3d = player.getLookVec();
-//                double d0 = 1.5D;
-//                double d1 = 0.1D;
-////                player.motionX += vec3d.x * d1 + (vec3d.x * d0 - player.motionX) * 0.2D;
-////                player.motionZ += vec3d.z * d1 + (vec3d.z * d0 - player.motionZ) * 0.2D;
-//                double up_boost;
-//                if (i > 0) {
-//                    up_boost = -0.07 * i + 0.6;
-//                } else {
-//                    up_boost = 0.07;
-//                }
-//                if (up_boost > 0) {
-//                    player.addVelocity(0, up_boost, 0);
-//
-//                    if (ConfigHandler.airResistanceEnabled) {
-//                        player.motionX *= glider.getAirResistance();
-//                        player.motionZ *= glider.getAirResistance();
-//                    }
-//                }
-
-                break;
-            } else if (!scanned.equals(Blocks.AIR)) {
-                break;
-            }
-            i++;
-        }
-
+    public static void initEffects() {
+        effects = new ArrayList<>();
+        effects.add(new TurbulenceEffect());
+        effects.add(new ThermalEffect());
     }
 
     //Currently sounds awful with crazy reverb, need to fix it somehow (probably custom ElytraSound without the check for isElytraFlying)

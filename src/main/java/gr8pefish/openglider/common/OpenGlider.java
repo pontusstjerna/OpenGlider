@@ -3,12 +3,13 @@ package gr8pefish.openglider.common;
 import gr8pefish.openglider.api.upgrade.UpgradeItems;
 import gr8pefish.openglider.common.config.ConfigHandler;
 import gr8pefish.openglider.common.event.ServerEventHandler;
+import gr8pefish.openglider.common.helper.OpenGliderPlayerHelper;
 import gr8pefish.openglider.common.lib.ModInfo;
 import gr8pefish.openglider.common.network.PacketHandler;
 import gr8pefish.openglider.common.proxy.IProxy;
 import gr8pefish.openglider.common.registry.CapabilityRegistry;
 import gr8pefish.openglider.common.registry.ItemRegistry;
-import gr8pefish.openglider.common.wind.WindHelper;
+import gr8pefish.openglider.common.effects.TurbulenceEffect;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -47,8 +48,8 @@ public class OpenGlider {
         //config
         ConfigHandler.init(event.getSuggestedConfigurationFile());
 
-        //wind
-        WindHelper.initNoiseGenerator();
+        // Init effects
+        OpenGliderPlayerHelper.initEffects();
 
         //register capabilities
         CapabilityRegistry.registerAllCapabilities();

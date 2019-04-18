@@ -1,8 +1,8 @@
-package gr8pefish.openglider.common.wind;
+package gr8pefish.openglider.common.effects;
 
 import gr8pefish.openglider.api.item.IGlider;
 import gr8pefish.openglider.common.config.ConfigHandler;
-import gr8pefish.openglider.common.wind.generator.OpenSimplexNoise;
+import gr8pefish.openglider.common.effects.generator.OpenSimplexNoise;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -10,15 +10,10 @@ import net.minecraft.item.ItemStack;
 /**
  * Applies "wind" effects to the player, moving them around when they fly.
  */
-public class WindHelper {
+public class TurbulenceEffect implements GliderEffect {
 
     /** Simplex noise has a better "game feel" than Perlin (the standard for Minecraft), so ti is used here. */
-    public static OpenSimplexNoise noiseGenerator;
-
-    /** Initialize noise generator once and store in a static variable for performance. */
-    public static void initNoiseGenerator() {
-        noiseGenerator = new OpenSimplexNoise();
-    }
+    private OpenSimplexNoise noiseGenerator = new OpenSimplexNoise();
 
     /**
      * Apply wind effect, buffeting them around pseudo-randomly.
@@ -27,19 +22,16 @@ public class WindHelper {
      * @param player - the player to move around
      * @param glider - the hang glider item
      */
-    public static void applyWind(EntityPlayer player, ItemStack glider){
-
-        if (!ConfigHandler.windEnabled) return; //if no wind, then do nothing
-
+    public void apply(EntityPlayer player, ItemStack glider){
         double windGustSize = ConfigHandler.windGustSize; //18;
-        double windFrequency = ConfigHandler.windFrequency; //0.15;
+        double windFrequency = ConfigHandler.turbulenceFrequency; //0.15;
         double windRainingMultiplier = ConfigHandler.windRainingMultiplier; //4;
         double windSpeedMultiplier = ConfigHandler.windSpeedMultiplier; //0.4;
         double windHeightMultiplier = ConfigHandler.windHeightMultiplier; //1.2;
         double windOverallPower = ConfigHandler.windOverallPower; //1;
 
         //downscale for gust size/occurrence amount
-        double noise = WindHelper.noiseGenerator.eval(player.posX / windGustSize, player.posZ / windGustSize); //occurrence amount
+        double noise = noiseGenerator.eval(player.posX / windGustSize, player.posZ / windGustSize); //occurrence amount
 
         //multiply by intensity factor (alter by multiplier if raining)
         noise *= player.world.isRaining() ? windRainingMultiplier * windFrequency : windFrequency;
@@ -66,6 +58,10 @@ public class WindHelper {
 
         //apply final rotation based on all the above
         player.rotationYaw += wind;
+    }
+
+    public boolean enabled() {
+        return ConfigHandler.turbulenceEnabled;
     }
 
 }

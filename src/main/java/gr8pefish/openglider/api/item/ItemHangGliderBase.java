@@ -38,17 +38,15 @@ public class ItemHangGliderBase extends Item implements IGlider {
     private double shiftHorizSpeed;
     private double shiftVertSpeed;
     private double windMultiplier;
-    private double airResistance;
     private int totalDurability;
     private ResourceLocation modelRL;
 
-    public ItemHangGliderBase(double horizSpeed, double glideRatio, double shiftHorizSpeed, double shiftVertSpeed, double windMultiplier, double airResistance, int totalDurability, ResourceLocation modelRL) {
+    public ItemHangGliderBase(double horizSpeed, double glideRatio, double shiftHorizSpeed, double shiftGlideRatio, double windMultiplier, int totalDurability, ResourceLocation modelRL) {
         this.horizSpeed = horizSpeed;
         this.vertSpeed = horizSpeed / glideRatio; // This is how it is calculated for real gliders as well
         this.shiftHorizSpeed = shiftHorizSpeed;
-        this.shiftVertSpeed = shiftVertSpeed;
+        this.shiftVertSpeed = shiftHorizSpeed / shiftGlideRatio;
         this.windMultiplier = windMultiplier;
-        this.airResistance = airResistance;
         this.totalDurability = totalDurability;
         this.modelRL = modelRL;
 
@@ -207,18 +205,8 @@ public class ItemHangGliderBase extends Item implements IGlider {
     }
 
     @Override
-    public void setHorizontalFlightSpeed(double speed) {
-        horizSpeed = speed;
-    }
-
-    @Override
     public double getVerticalFlightSpeed() {
         return vertSpeed;
-    }
-
-    @Override
-    public void setVerticalFlightSpeed(double speed) {
-        vertSpeed = speed;
     }
 
     @Override
@@ -227,18 +215,8 @@ public class ItemHangGliderBase extends Item implements IGlider {
     }
 
     @Override
-    public void setShiftHorizontalFlightSpeed(double speed) {
-        shiftHorizSpeed = speed;
-    }
-
-    @Override
     public double getShiftVerticalFlightSpeed() {
         return shiftVertSpeed;
-    }
-
-    @Override
-    public void setShiftVerticalFlightSpeed(double speed) {
-        shiftVertSpeed = speed;
     }
 
     @Override
@@ -249,16 +227,6 @@ public class ItemHangGliderBase extends Item implements IGlider {
     @Override
     public void setWindMultiplier(double windMultiplierToSetTo) {
         windMultiplier = windMultiplierToSetTo;
-    }
-
-    @Override
-    public double getAirResistance() {
-        return airResistance;
-    }
-
-    @Override
-    public void setAirResistance(double airResistanceToSetTo) {
-        airResistance = airResistanceToSetTo;
     }
 
     @Override

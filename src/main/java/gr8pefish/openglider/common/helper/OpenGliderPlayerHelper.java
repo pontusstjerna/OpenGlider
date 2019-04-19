@@ -61,16 +61,17 @@ public class OpenGliderPlayerHelper {
                     }
 
                     // Apply forward motion
-                    double x = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
-                    double z = Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
-                    player.motionX = x;
-                    player.motionZ = z; //ToDo: Wrong, need multiplication to slow down
+                    double maxSpeedX = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
+                    double maxSpeedZ = Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
 
-                    // Apply air resistance
-                    if (ConfigHandler.airResistanceEnabled) {
-                        player.motionX *= iGlider.getAirResistance();
-                        player.motionZ *= iGlider.getAirResistance();
-                    }
+                    double horizontalAcceleration = 0.01;
+
+                    double accelerationX = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalAcceleration;
+                    double accelerationZ = Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalAcceleration;
+
+                    player.motionX = Math.abs(maxSpeedX) <= Math.abs(accelerationX) ? maxSpeedX : accelerationX;
+                    player.motionZ = Math.abs(maxSpeedZ) <= Math.abs(accelerationZ) ? maxSpeedZ : accelerationZ;
+
 
                     // Stop fall damage
                     player.fallDistance = 0.0F;

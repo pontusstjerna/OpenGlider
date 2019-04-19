@@ -34,7 +34,7 @@ public class OpenGliderPlayerHelper {
         if (shouldBeGliding(player)) {
             ItemStack glider = GliderHelper.getGlider(player);
             if (isValidGlider(glider)) {
-                if (player.motionY < 0) { //if falling (flying)
+                if (!player.onGround) { //if flying
 
                     // Init variables
                     final double horizontalSpeed;
@@ -51,7 +51,7 @@ public class OpenGliderPlayerHelper {
                     }
 
                     // Apply falling motion
-                    player.motionY *= verticalSpeed;
+                    player.motionY = verticalSpeed;
 
                     // Apply all configured effects
                     for (GliderEffect effect : effects) {

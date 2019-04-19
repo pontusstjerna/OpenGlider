@@ -44,7 +44,7 @@ public class ThermalEffect implements GliderEffect {
                     ) { //ToDo: configurable
 
                 // make uplift relative to configured fall speed (TODO: Maybe change)
-                double upliftAirSpeedMt = ((IGlider)glider.getItem()).getVerticalFlightSpeed() * 0.05;
+                double upliftAirSpeedMt = 0.2;
 
                 // Add uplift to player yVel
                 player.motionY += upliftAirSpeedMt;

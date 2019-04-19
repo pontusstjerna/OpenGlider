@@ -85,7 +85,7 @@ public class ConfigHandler {
         basicGliderGlideRatio = config.getFloat("2) Glide Ratio", category, 14, 0, 100,"The amount of blocks a player moves forward for each block downward while gliding normally.");
         basicGliderShiftHorizSpeed = config.getFloat("3) Fast Forward Speed", category, 1.1F, 0, 100,"The amount of blocks to move forwards (per-tick) while gliding fast (pressing 'Shift').");
         basicGliderShiftGlideRatio = config.getFloat("4) Fast Glide ratio", category, 8, 0, 100,"The amount of blocks a player moves forward for each block downward while gliding fast (pressing 'Shift').");
-        basicGliderHorizAcc = config.getFloat("5) Acceleration", category, 0.01F, 0.001F, 10, "The amount of blocks to accelerate (per-tick) in forward motion.");
+        basicGliderHorizAcc = config.getFloat("5) Acceleration", category, 0.1F, 0.001F, 10, "The amount of blocks to accelerate (per-tick) in forward motion.");
         basicGliderWindModifier = config.getFloat("6) Overall Wind Power", category, 1.4F, 0.001F, 10, "A quality-of-life option to quickly change the overall power of the wind effect for this glider. Default is an overall relatively weak wind, with moderate gusts that occur semi-commonly. Note that this value can be a decimal (i.e. 0.5 would be half as strong). More fine-grained options are available in the 'wind' section of this config.");
         basicGliderTotalDurability = config.getInt("7) Total Durability", category, 818, 1, 10000, "The maximum durability of an unused hang glider.");
 
@@ -95,7 +95,7 @@ public class ConfigHandler {
         advancedGliderGlideRatio = config.getFloat("2) Normal Glide Ratio", category, 18, 0, 100,"The amount of blocks a player moves forward for each block downward while gliding normally.");
         advancedGliderShiftHorizSpeed = config.getFloat("3) Fast Forward Speed", category, 1.5F, 0, 100,"The amount of blocks to move forwards (per-tick) while gliding fast (pressing 'Shift').");
         advancedGliderShiftGlideRatio = config.getFloat("4) Fast Glide Ratio", category, 12, 0, 100,"The amount of blocks a player moves forward for each block downward while gliding fast (pressing 'Shift').");
-        basicGliderHorizAcc = config.getFloat("5) Acceleration", category, 0.01F, 0.001F, 10, "The amount of blocks to accelerate (per-tick) in forward motion.");
+        advancedGliderGlideRatio = config.getFloat("5) Acceleration", category, 0.1F, 0.001F, 10, "The amount of blocks to accelerate (per-tick) in forward motion.");
         advancedGliderWindModifier = config.getFloat("6) Overall Wind Power", category, 0.75F, 0.001F, 10, "A quality-of-life option to quickly change the overall power of the wind effect for this glider. Default is an overall quite weak wind, with mild gusts that occur semi-commonly. Note that this value can be a decimal (i.e. 0.5 would be half as strong). More fine-grained options are available in the 'wind' section of this config."); //ToDo: playtest
         advancedGliderTotalDurability = config.getInt("7) Total Durability", category, 2202, 1, 100000, "The maximum durability of an unused advanced hang glider.");
 

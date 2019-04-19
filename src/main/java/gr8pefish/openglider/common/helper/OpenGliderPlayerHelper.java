@@ -44,14 +44,18 @@ public class OpenGliderPlayerHelper {
                     // Get speed depending on glider and if player is sneaking
                     if (!player.isSneaking()) {
                         horizontalSpeed = iGlider.getHorizontalFlightSpeed();
-                        verticalSpeed = iGlider.getVerticalFlightSpeed();
+
+                        // TODO: Maybe this should be calculated elsewhere. This allows for different formulas to allow stall speed etc
+                        verticalSpeed = horizontalSpeed / iGlider.getGlideRatio();
                     } else {
                         horizontalSpeed = iGlider.getShiftHorizontalFlightSpeed();
-                        verticalSpeed = iGlider.getShiftVerticalFlightSpeed();
+
+                        // TODO: Maybe this should be calculated elsewhere. This allows for different formulas to allow stall speed etc
+                        verticalSpeed = horizontalSpeed / iGlider.getShiftGlideRatio();
                     }
 
                     // Apply falling motion
-                    player.motionY = verticalSpeed;
+                    player.motionY = -verticalSpeed;
 
                     // Apply all configured effects
                     for (GliderEffect effect : effects) {
@@ -60,14 +64,14 @@ public class OpenGliderPlayerHelper {
                         }
                     }
 
+                    final double horizontalAcceleration = iGlider.getHorizontalAcceleration();
+
                     // Apply forward motion
                     double maxSpeedX = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
                     double maxSpeedZ = Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
 
-                    double horizontalAcceleration = 0.01;
-
-                    double accelerationX = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalAcceleration;
-                    double accelerationZ = Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalAcceleration;
+                    double accelerationX = (Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalAcceleration) + player.motionX;
+                    double accelerationZ = (Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalAcceleration) + player.motionZ;
 
                     player.motionX = Math.abs(maxSpeedX) <= Math.abs(accelerationX) ? maxSpeedX : accelerationX;
                     player.motionZ = Math.abs(maxSpeedZ) <= Math.abs(accelerationZ) ? maxSpeedZ : accelerationZ;

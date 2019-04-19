@@ -12,7 +12,7 @@ import static gr8pefish.openglider.api.OpenGliderInfo.MODID;
 public class ItemHangGliderAdvanced extends ItemHangGliderBase {
 
     public ItemHangGliderAdvanced() {
-        super(ConfigHandler.advancedGliderHorizSpeed, ConfigHandler.advancedGliderGlideRatio, ConfigHandler.advancedGliderShiftHorizSpeed, ConfigHandler.advancedGliderShiftGlideRatio, ConfigHandler.advancedGliderWindModifier, ConfigHandler.advancedGliderTotalDurability, ModelGlider.MODEL_GLIDER_ADVANCED_TEXTURE_RL);
+        super(ConfigHandler.advancedGliderHorizSpeed, ConfigHandler.advancedGliderGlideRatio, ConfigHandler.advancedGliderShiftHorizSpeed, ConfigHandler.advancedGliderShiftGlideRatio, ConfigHandler.advancedGliderHorizAcc, ConfigHandler.advancedGliderWindModifier, ConfigHandler.advancedGliderTotalDurability, ModelGlider.MODEL_GLIDER_ADVANCED_TEXTURE_RL);
         setCreativeTab(OpenGlider.creativeTab);
         setTranslationKey(MODID +":" + ModInfo.ITEM_GLIDER_ADVANCED_NAME);
     }

@@ -34,26 +34,28 @@ public class ItemHangGliderBase extends Item implements IGlider {
     //ToDo: NBT saving tags of upgrade (need IRecipe for them)
 
     private double horizSpeed;
-    private double vertSpeed;
+    private double glideRatio;
     private double shiftHorizSpeed;
-    private double shiftVertSpeed;
+    private double shiftGlideRatio;
+    private double horizAcc;
     private double windMultiplier;
     private int totalDurability;
     private ResourceLocation modelRL;
 
-    public ItemHangGliderBase(double horizSpeed, double glideRatio, double shiftHorizSpeed, double shiftGlideRatio, double windMultiplier, int totalDurability, ResourceLocation modelRL) {
+    public ItemHangGliderBase(double horizSpeed, double glideRatio, double shiftHorizSpeed, double shiftGlideRatio, double horizAcc, double windMultiplier, int totalDurability, ResourceLocation modelRL) {
         this.horizSpeed = horizSpeed;
-        this.vertSpeed = horizSpeed / glideRatio; // This is how it is calculated for real gliders as well
+        this.glideRatio = glideRatio;
         this.shiftHorizSpeed = shiftHorizSpeed;
-        this.shiftVertSpeed = shiftHorizSpeed / shiftGlideRatio;
+        this.shiftGlideRatio = shiftGlideRatio;
+        this.horizAcc = horizAcc;
         this.windMultiplier = windMultiplier;
         this.totalDurability = totalDurability;
         this.modelRL = modelRL;
 
 //        setHorizontalFlightSpeed(horizSpeed);
-//        setVerticalFlightSpeed(vertSpeed);
+//        setVerticalFlightSpeed(glideRatio);
 //        setShiftHorizontalFlightSpeed(shiftHorizSpeed);
-//        setShiftVerticalFlightSpeed(vertSpeed);
+//        setShiftVerticalFlightSpeed(glideRatio);
 //        setWindMultiplier(windMultiplier);
 //        setTotalDurability(totalDurability);
 //        setModelTexture(modelRL);
@@ -205,8 +207,8 @@ public class ItemHangGliderBase extends Item implements IGlider {
     }
 
     @Override
-    public double getVerticalFlightSpeed() {
-        return vertSpeed;
+    public double getGlideRatio() {
+        return glideRatio;
     }
 
     @Override
@@ -215,8 +217,13 @@ public class ItemHangGliderBase extends Item implements IGlider {
     }
 
     @Override
-    public double getShiftVerticalFlightSpeed() {
-        return shiftVertSpeed;
+    public double getShiftGlideRatio() {
+        return shiftGlideRatio;
+    }
+
+    @Override
+    public double getHorizontalAcceleration() {
+        return horizAcc;
     }
 
     @Override

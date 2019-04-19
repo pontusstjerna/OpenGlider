@@ -15,14 +15,14 @@ public interface IGlider extends INBTSerializable<NBTTagCompound> {
     //Blocks traveled horizontally per movement time.
     double getHorizontalFlightSpeed();
 
-    //Blocks traveled vertically per movement time.
-    double getVerticalFlightSpeed();
+    //Blocks traveled horizontally per block vertically.
+    double getGlideRatio();
 
     //Blocks traveled horizontally per movement time when going fast/pressing shift.
     double getShiftHorizontalFlightSpeed();
 
     //Blocks traveled vertically per movement time when going fast/pressing shift.
-    double getShiftVerticalFlightSpeed();
+    double getShiftGlideRatio();
 
     double getHorizontalAcceleration();
 

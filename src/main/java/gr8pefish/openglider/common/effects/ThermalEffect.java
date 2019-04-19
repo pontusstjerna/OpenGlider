@@ -20,11 +20,29 @@ public class ThermalEffect implements GliderEffect {
      */
     public void apply(EntityPlayer player, ItemStack glider) {
         // TODO: Make configurable?
+        applyDynamicThermals(player, glider);
         applyStaticThermals(player, glider);
     }
 
     public boolean enabled() {
         return ConfigHandler.thermalsEnabled;
+    }
+
+    // TODO: Animate glider nose pitchup
+    private void applyDynamicThermals(EntityPlayer player, ItemStack glider) {
+
+        final double afternoon = 8000;
+        double timeOfDay = player.world.getWorldTime();
+
+        // This formula gives a decent curve for thermal activity, with the strongest thermals being present at 2 PM
+        double timeOfDayMultiplier = (-Math.pow(timeOfDay - afternoon, 2) / Math.pow(afternoon, 2)) + 1;
+
+        // 0.15 blocks / tick equals 3m / second, which is a regular thermal
+        final double strongestThermal = 0.15;
+
+        // TODO: Add logic
+
+        player.motionY += strongestThermal * timeOfDayMultiplier;
     }
 
     // This applies a static uplift from a heat source on the ground

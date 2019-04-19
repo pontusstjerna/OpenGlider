@@ -76,7 +76,6 @@ public class OpenGliderPlayerHelper {
                     player.motionX = Math.abs(maxSpeedX) <= Math.abs(accelerationX) ? maxSpeedX : accelerationX;
                     player.motionZ = Math.abs(maxSpeedZ) <= Math.abs(accelerationZ) ? maxSpeedZ : accelerationZ;
 
-
                     // Stop fall damage
                     player.fallDistance = 0.0F;
 

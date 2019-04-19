@@ -73,6 +73,7 @@ public class ConfigHandler {
         syncConfig();
     }
 
+    // The default values are from this glider: https://www.moyes.com.au/products/hang-gliders/litesport/specifications
     public static void syncConfig() {
         categories.clear();
 

@@ -38,9 +38,7 @@ public class ThermalEffect implements GliderEffect {
             Block scanned = worldIn.getBlockState(scanpos).getBlock();
             if (scanned.equals(Blocks.FIRE) ||
                     scanned.equals(Blocks.LAVA) ||
-                    scanned.equals(Blocks.FLOWING_LAVA) ||
-                    scanned.equals(Blocks.SAND) ||
-                    scanned.equals(Blocks.GRASS)
+                    scanned.equals(Blocks.FLOWING_LAVA)
                     ) { //ToDo: configurable
 
                 // make uplift relative to configured fall speed (TODO: Maybe change)

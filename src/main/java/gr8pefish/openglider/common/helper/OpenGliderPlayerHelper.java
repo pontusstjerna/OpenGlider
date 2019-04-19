@@ -63,8 +63,8 @@ public class OpenGliderPlayerHelper {
                     // Apply forward motion
                     double x = Math.cos(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
                     double z = Math.sin(Math.toRadians(player.rotationYaw + 90)) * horizontalSpeed;
-                    player.motionX += x;
-                    player.motionZ += z; //ToDo: Wrong, need multiplication to slow down
+                    player.motionX = x;
+                    player.motionZ = z; //ToDo: Wrong, need multiplication to slow down
 
                     // Apply air resistance
                     if (ConfigHandler.airResistanceEnabled) {

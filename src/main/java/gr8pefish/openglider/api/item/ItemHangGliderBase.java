@@ -42,9 +42,9 @@ public class ItemHangGliderBase extends Item implements IGlider {
     private int totalDurability;
     private ResourceLocation modelRL;
 
-    public ItemHangGliderBase(double horizSpeed, double vertSpeed, double shiftHorizSpeed, double shiftVertSpeed, double windMultiplier, double airResistance, int totalDurability, ResourceLocation modelRL) {
+    public ItemHangGliderBase(double horizSpeed, double glideRatio, double shiftHorizSpeed, double shiftVertSpeed, double windMultiplier, double airResistance, int totalDurability, ResourceLocation modelRL) {
         this.horizSpeed = horizSpeed;
-        this.vertSpeed = vertSpeed;
+        this.vertSpeed = horizSpeed / glideRatio; // This is how it is calculated for real gliders as well
         this.shiftHorizSpeed = shiftHorizSpeed;
         this.shiftVertSpeed = shiftVertSpeed;
         this.windMultiplier = windMultiplier;
